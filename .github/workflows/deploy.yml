@@ -15,14 +15,15 @@ jobs:
         uses: actions/checkout@v2
 
       # Step 2: Set up Kubeconfig for kubectl to authenticate with your cluster
-      - name: Set up Kubeconfig
+      - name: Debug and Set up Kubeconfig
         run: |
           echo "Setting up kubeconfig..."
           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
-          cat ~/.kube/config  # Display the contents of the kubeconfig for debugging
+          echo "Kubeconfig contents:"
+          cat ~/.kube/config  # Output the kubeconfig content for debugging purposes
 
-      # Step 3: Debug kubectl version and cluster information
-      - name: Debug kubectl version and cluster
+      # Step 3: Debug kubectl version and cluster info
+      - name: Debug kubectl version and cluster info
         run: |
           kubectl version -v=8   # Get detailed kubectl version info
           kubectl cluster-info -v=8  # Get detailed cluster info
@@ -38,4 +39,3 @@ jobs:
         run: |
           kubectl get pods -v=8  # Detailed logging during get pods
           kubectl describe pods -v=8  # Get detailed description for more insights
-
