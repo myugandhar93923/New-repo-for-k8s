@@ -1,0 +1,30 @@
+name: Deploy to Kubernetes
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the 'main' branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Kubeconfig for kubectl to authenticate with your cluster
+      - name: Set up Kubeconfig
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+
+      # Step 3: Deploy the Pod
+      - name: Apply Kubernetes YAML for Pod
+        run: |
+          kubectl apply -f k8s/nginx-pod.yaml
+
+      # Step 4: Verify the Pod is running
+      - name: Check Pod Status
+        run: |
+          kubectl get pods
