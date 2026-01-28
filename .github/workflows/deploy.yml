@@ -1,6 +1,6 @@
 jobs:
   deploy:
-    runs-on: [self-hosted, linux]  # Using self-hosted runner with the linux label
+    runs-on: [self-hosted, linux]  # Using selsf-hosted runner with the linux label
 
     steps:
       - name: Checkout code
