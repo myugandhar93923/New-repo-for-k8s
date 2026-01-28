@@ -17,14 +17,25 @@ jobs:
       # Step 2: Set up Kubeconfig for kubectl to authenticate with your cluster
       - name: Set up Kubeconfig
         run: |
+          echo "Setting up kubeconfig..."
           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          cat ~/.kube/config  # Display the contents of the kubeconfig for debugging
 
-      # Step 3: Deploy the Pod (with correct path to the YAML file)
+      # Step 3: Debug kubectl version and cluster information
+      - name: Debug kubectl version and cluster
+        run: |
+          kubectl version -v=8   # Get detailed kubectl version info
+          kubectl cluster-info -v=8  # Get detailed cluster info
+
+      # Step 4: Deploy the Pod with verbose logging
       - name: Apply Kubernetes YAML for Pod
         run: |
-          kubectl apply -f nginx-pod.yaml  # Ensure this path matches the location of your YAML file
-
-      # Step 4: Verify the Pod is running
+          echo "Applying Kubernetes YAML file..."
+          kubectl apply -f nginx-pod.yaml -v=8  # Detailed logging during apply
+          
+      # Step 5: Verify the Pod is running with verbose logging
       - name: Check Pod Status
         run: |
-          kubectl get pods
+          kubectl get pods -v=8  # Detailed logging during get pods
+          kubectl describe pods -v=8  # Get detailed description for more insights
+
