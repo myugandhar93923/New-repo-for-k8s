@@ -18,15 +18,18 @@ jobs:
       - name: Debug and Set up Kubeconfig
         run: |
           echo "Setting up kubeconfig..."
+          # Check environment variable to verify it's being passed
+          echo "KUBECONFIG secret passed"
+          echo "${{ secrets.KUBECONFIG }}" | head -n 10  # Output the first 10 lines for privacy
           echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
-          echo "Kubeconfig contents:"
-          cat ~/.kube/config  # Output the kubeconfig content for debugging purposes
+          cat ~/.kube/config  # Output the kubeconfig file for debugging
 
       # Step 3: Debug kubectl version and cluster info
       - name: Debug kubectl version and cluster info
         run: |
-          kubectl version -v=8   # Get detailed kubectl version info
-          kubectl cluster-info -v=8  # Get detailed cluster info
+          echo "Running kubectl version and cluster info..."
+          kubectl version --client -v=8   # Get detailed kubectl version info
+          kubectl cluster-info -v=8  # Get detailed cluster info to check connectivity
 
       # Step 4: Deploy the Pod with verbose logging
       - name: Apply Kubernetes YAML for Pod
@@ -37,5 +40,6 @@ jobs:
       # Step 5: Verify the Pod is running with verbose logging
       - name: Check Pod Status
         run: |
+          echo "Checking Pod Status..."
           kubectl get pods -v=8  # Detailed logging during get pods
           kubectl describe pods -v=8  # Get detailed description for more insights
