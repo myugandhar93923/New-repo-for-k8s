@@ -1,6 +1,14 @@
+name: Deploy to Kubernetes
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Manually trigger workflow
+
 jobs:
   deploy:
-    runs-on: [self-hosted, linux]  # Using selsf-hosted runner with the linux label
+    runs-on: [self-hosted, linux]
 
     steps:
       - name: Checkout code
